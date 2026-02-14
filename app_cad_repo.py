@@ -65,15 +65,30 @@ money_market_ylds_df = merge_dfs([
 ]).dropna()
 
 def plot_corra_rate_complex():
-    streamlit_plot(df=corra_rate_complex,
-                   columns_array=corra_rate_complex.columns,
-                   colors_array=["#0B2138",
-                                 "#48DEE9",
-                                 '#7EC0EE',
-                                 '#F9D15B',
-                                 '#F9C846'],
-                   graph_title='CORRA Rate Complex',
-                   y_axis_label='%')
+    
+    streamlit_plot_with_spreads(
+        df=corra_rate_complex,
+        main_columns=corra_rate_complex.columns,
+        colors_array=["#0B2138",
+                      "#48DEE9",
+                      '#7EC0EE',
+                      '#F9D15B',
+                      '#F9C846'],
+        graph_title="CORRA Rate Complex",
+        y_axis_label="%",
+        spread_pairs=[
+            ("CORRA", "CORRA 5%"),
+            ("CORRA", "CORRA 25%"),
+            ("CORRA", "CORRA 75%"),
+            ("CORRA", "CORRA 95%"),
+        ],  # add more tuples if needed
+        spread_colors=[
+            "#FF9F68",
+            "#FF6B9A",
+            "#A3FF8F",
+            "#C492FF"],
+        spread_y_label="Spreads",
+    )
 
 def plot_corra_volumes():
     streamlit_plot_with_spreads(
