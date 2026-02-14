@@ -2,9 +2,9 @@
 ### -------------------------------- PACKAGES AND FUNCTIONS -------------------------------- ###
 ### ---------------------------------------------------------------------------------------- ###
 
+### IMPORT OTHER SCRIPTS ###
 import streamlit as st
 import pandas as pd
-from pathlib import Path
 import app_boc_activity
 import app_cad_repo
 
@@ -12,13 +12,13 @@ import app_cad_repo
 ### --------------------------------- CONFIGURE STREAMLIT ---------------------------------- ###
 ### ---------------------------------------------------------------------------------------- ###
 
+### CONFIGURE PAGE SETTINGS ###
 st.set_page_config(
     page_title="CAD Monitor",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# CSS: keep layout the same, just make the sidebar green
 st.markdown("""
     <style>
     .header-container {
@@ -40,40 +40,26 @@ st.markdown("""
         padding: 4px 8px;
         border-radius: 4px;
         display: inline-block;
-        margin-right: 10px;
-    }
-
-    /* Sidebar in Mistral green */
-    section[data-testid="stSidebar"] {
-        background-color: #003321;
-        color: #ffffff;
-    }
-    section[data-testid="stSidebar"] * {
-        color: #ffffff;
+        margin-right: 10px;a
     }
     </style>
 """, unsafe_allow_html=True)
 
-### ---------------------------------------------------------------------------------------- ###
-### --------------------------------------- SIDEBAR ---------------------------------------- ###
-### ---------------------------------------------------------------------------------------- ###
-
-# Logo in sidebar (place logo at assets/mistral_logo.png)
-logo_path = Path("mistral logo.png")
-if logo_path.exists():
-    st.sidebar.image(str(logo_path), use_column_width=True)
-
+### SIDEBAR ###
 st.sidebar.title("CAD Monitor")
-start_dt = st.sidebar.date_input("Start Date", value=pd.to_datetime("1999-12-31"))
-end_dt = st.sidebar.date_input("End Date", value=pd.to_datetime("today"))
+start_dt = st.sidebar.date_input("Start Date", value=pd.to_datetime('1999-12-31'))
+end_dt = st.sidebar.date_input("End Date", value=pd.to_datetime('today'))
 
 def reset_other_selections(current_section):
-    sections = ["BoC Activity", "Repo"]
+    sections = ["BoC Activity",
+                "Repo"
+                ]
     for section in sections:
         if section != current_section:
             st.session_state[f"{section}_selection"] = "Select an option..."
 
 with st.sidebar:
+    # Create a dictionary mapping sections to their options
     sections = {
         "BoC Activity": {
             "Select an option...": "Select an option...",
@@ -85,10 +71,12 @@ with st.sidebar:
         }
     }
 
+    # Initialize session state for each section if not exists
     for section in sections:
         if f"{section}_selection" not in st.session_state:
             st.session_state[f"{section}_selection"] = "Select an option..."
 
+    # Create section headers and selectboxes
     st.markdown("### BoC Activity")
     boc_activity = st.selectbox(
         "BoC Activity",
@@ -107,8 +95,11 @@ with st.sidebar:
         label_visibility="collapsed"
     )
 
+    # Set the current page based on any non-default selection
     page = "Select an option..."
-    for selection in [boc_activity, repo]:
+    for selection in [boc_activity,
+                      repo
+                      ]:
         if selection != "Select an option...":
             page = selection
             break
@@ -117,19 +108,20 @@ with st.sidebar:
 ### ------------------------------- BANK OF CANADA ACTIVITY -------------------------------- ###
 ### ---------------------------------------------------------------------------------------- ###
 
-if page == "Balance Sheet":
-    st.title("Assets")
-    app_boc_activity.plot_boc_assets(start_dt, end_dt)
-    st.title("Liabilities")
-    app_boc_activity.plot_boc_liabilities(start_dt, end_dt)
+if page == 'Balance Sheet':
+    st.title('Assets')
+    app_boc_activity.plot_boc_assets(start_dt,end_dt)
+    st.title('Liabilities')
+    app_boc_activity.plot_boc_liabilities(start_dt,end_dt)
+
 
 ### ---------------------------------------------------------------------------------------- ###
 ### --------------------------------------- CAD REPO --------------------------------------- ###
 ### ---------------------------------------------------------------------------------------- ###
 
-elif page == "CORRA":
-    st.title("CORRA")
-    st.subheader("CORRA Rate Complex")
-    app_cad_repo.plot_corra_rate_complex(start_dt, end_dt)
-    st.subheader("CORRA Total and Trimmed Volume")
-    app_cad_repo.plot_corra_volumes(start_dt, end_dt)
+elif page == 'CORRA':
+    st.title("CORRA Rate Complex")
+    app_cad_repo.plot_corra_rate_complex(start_dt,end_dt)
+    st.title("CORRA Total and Trimmed Volume")
+    app_cad_repo.plot_corra_volumes(start_dt,end_dt)
+
