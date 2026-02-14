@@ -8,6 +8,7 @@ import pandas as pd
 import app_boc_activity
 import app_cad_repo
 import app_lynx
+import cad_datapull
 
 ### ---------------------------------------------------------------------------------------- ###
 ### --------------------------------- CONFIGURE STREAMLIT ---------------------------------- ###
@@ -87,6 +88,13 @@ st.markdown("""
 st.sidebar.title("Mistral CAD Monitor")
 start_dt = st.sidebar.date_input("Start Date", value=pd.to_datetime('1999-12-31'))
 end_dt = st.sidebar.date_input("End Date", value=pd.to_datetime('today'))
+
+# ---- REFRESH DATA BUTTON (here) ----
+if st.sidebar.button("Refresh BoC data"):
+    with st.spinner("Updating BoC data..."):
+        cad_datapull.update_all_boc_data()
+    st.success("BoC data updated.")
+# ------------------------------------
 
 def reset_other_selections(current_section):
     sections = ["BoC Activity",
