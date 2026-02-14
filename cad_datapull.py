@@ -31,7 +31,11 @@ corra_95_df = get_boc_historical_timeseries(
 ### CORRA TRADING VOLUME ###
 corra_total_volume_df = get_boc_historical_timeseries(
     'CORRA_TOTAL_VOLUME',
-    '1990-01-01','corra')
+    'corra')
+with open(Path(DATA_DIR) / 'corra_total_volume_df.pkl', 'wb') as file:
+    pickle.dump(corra_total_volume_df, file)
 corra_trimmed_volume_df = get_boc_historical_timeseries(
     'CORRA_TRIMMED_VOLUME',
-    '1990-01-01','corra')
+    'corra')
+with open(Path(DATA_DIR) / 'corra_trimmed_volume_df.pkl', 'wb') as file:
+    pickle.dump(corra_trimmed_volume_df, file)
