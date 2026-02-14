@@ -54,16 +54,16 @@ corra_liabilities = merge_dfs([
     boc_total_liabilities_df,
 ]).dropna()
 
-def plot_boc_assets():
-    streamlit_plot(df=boc_assets,
+def plot_boc_assets(start_date,end_date):
+    streamlit_plot(df=boc_assets.loc[start_date:end_date],
                    columns_array=boc_assets.columns,
                    colors_array=["#0B2138", "#48DEE9",'#7EC0EE',
                                  '#F9D15B','#F9C846','#F39C12'],
                    graph_title='CORRA Rate Complex',
                    y_axis_label='$')
 
-def plot_boc_liabilities():
-    streamlit_plot(df=corra_liabilities,
+def plot_boc_liabilities(start_date,end_date):
+    streamlit_plot(df=corra_liabilities.loc[start_date:end_date],
                    columns_array=corra_liabilities.columns,
                    colors_array=["#0B2138", "#48DEE9",'#7EC0EE','#F9D15B','#F9C846'],
                    graph_title='CORRA Total and Trimmed Volume',

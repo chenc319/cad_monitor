@@ -75,7 +75,7 @@ with st.sidebar:
     sections = {
         "BoC Activity": {
             "Select an option...": "Select an option...",
-            "Summary": "Summary"
+            "Balance Sheet": "Balance Sheet"
         },
         "Repo": {
             "Select an option...": "Select an option...",
@@ -120,7 +120,7 @@ with st.sidebar:
 ### ------------------------------- BANK OF CANADA ACTIVITY -------------------------------- ###
 ### ---------------------------------------------------------------------------------------- ###
 
-if page == 'Summary':
+if page == 'Balance Sheet':
     st.title('Assets')
     app_boc_activity.plot_boc_assets()
     st.title('Liabilities')
