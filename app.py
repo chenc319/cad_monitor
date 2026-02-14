@@ -90,7 +90,7 @@ start_dt = st.sidebar.date_input("Start Date", value=pd.to_datetime('1999-12-31'
 end_dt = st.sidebar.date_input("End Date", value=pd.to_datetime('today'))
 
 # ---- REFRESH DATA BUTTON (here) ----
-if st.sidebar.button("Refresh BoC data"):
+if st.sidebar.button("Refresh Data"):
     with st.spinner("Updating BoC data..."):
         cad_datapull.update_all_boc_data()
     st.success("BoC data updated.")
