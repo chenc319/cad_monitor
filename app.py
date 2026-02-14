@@ -14,7 +14,7 @@ import app_cad_repo
 
 ### CONFIGURE PAGE SETTINGS ###
 st.set_page_config(
-    page_title="CAD Monitor",
+    page_title="Mistral CAD Monitor",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -40,13 +40,32 @@ st.markdown("""
         padding: 4px 8px;
         border-radius: 4px;
         display: inline-block;
-        margin-right: 10px;a
+        margin-right: 10px;
+    }
+
+    /* ----- Mistral sidebar theming ----- */
+
+    /* Sidebar background */
+    [data-testid="stSidebar"] {
+        background-color: #0F3B2E;  /* Mistral green */
+    }
+
+    /* Sidebar text color */
+    [data-testid="stSidebar"] * {
+        color: #FFFFFF !important;
+    }
+
+    /* Optional: tweak selectboxes and date inputs in sidebar */
+    [data-testid="stSidebar"] .stSelectbox,
+    [data-testid="stSidebar"] .stDateInput {
+        background-color: #0F3B2E;
     }
     </style>
 """, unsafe_allow_html=True)
 
+
 ### SIDEBAR ###
-st.sidebar.title("CAD Monitor")
+st.sidebar.title("Mistral CAD Monitor")
 start_dt = st.sidebar.date_input("Start Date", value=pd.to_datetime('1999-12-31'))
 end_dt = st.sidebar.date_input("End Date", value=pd.to_datetime('today'))
 
