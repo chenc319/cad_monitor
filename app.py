@@ -2,9 +2,9 @@
 ### -------------------------------- PACKAGES AND FUNCTIONS -------------------------------- ###
 ### ---------------------------------------------------------------------------------------- ###
 
-### IMPORT OTHER SCRIPTS ###
 import streamlit as st
 import pandas as pd
+from pathlib import Path
 import app_boc_activity
 import app_cad_repo
 
@@ -12,106 +12,56 @@ import app_cad_repo
 ### --------------------------------- CONFIGURE STREAMLIT ---------------------------------- ###
 ### ---------------------------------------------------------------------------------------- ###
 
-### CONFIGURE PAGE SETTINGS ###
 st.set_page_config(
     page_title="CAD Monitor",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# THEME + HEADER
+# CSS: keep layout the same, just make the sidebar green
 st.markdown("""
-<style>
-:root {
-    --mistral-green: #003321;
-    --mistral-green-light: #0b3b2e;
-    --mistral-bg: #f4f7f6;
-}
+    <style>
+    .header-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 8px;
+        background-color: white;
+        z-index: 999;
+        border-bottom: 1px solid #f0f2f6;
+        font-size: 14px;
+    }
+    .main {
+        margin-top: 60px;
+    }
+    .stMetric {
+        background-color: #ffffff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-right: 10px;
+    }
 
-/* Top brand bar */
-.brand-bar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 64px;
-    padding: 0 32px;
-    background-color: var(--mistral-green);
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 1000;
-    border-bottom: 1px solid #002616;
-    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-.brand-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 22px;
-    letter-spacing: 0.12em;
-}
-
-.brand-right {
-    font-size: 16px;
-    opacity: 0.9;
-}
-
-/* Main background */
-main {
-    background-color: var(--mistral-bg);
-}
-
-/* Push main content below bar */
-main .block-container {
-    padding-top: 88px;
-}
-
-/* Sidebar background + text */
-section[data-testid="stSidebar"] {
-    background-color: var(--mistral-green-light);
-    color: #ffffff;
-}
-section[data-testid="stSidebar"] * {
-    color: #ffffff;
-}
-
-/* Sidebar form elements as white cards */
-section[data-testid="stSidebar"] .stDateInput,
-section[data-testid="stSidebar"] .stTextInput,
-section[data-testid="stSidebar"] .stSelectbox {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-    border-radius: 6px;
-}
-
-/* Sidebar titles */
-section[data-testid="stSidebar"] h1,
-section[data-testid="stSidebar"] h2,
-section[data-testid="stSidebar"] h3 {
-    color: #ffffff;
-}
-
-/* Main titles */
-h1, h2, h3 {
-    color: var(--mistral-green);
-}
-</style>
-
-<div class="brand-bar">
-  <div class="brand-left">
-    <span style="font-size:26px; line-height:1;">≋</span>
-    <span>MISTRAL&nbsp;CAPITAL</span>
-  </div>
-  <div class="brand-right">
-    CAD Monitor
-  </div>
-</div>
+    /* Sidebar in Mistral green */
+    section[data-testid="stSidebar"] {
+        background-color: #003321;
+        color: #ffffff;
+    }
+    section[data-testid="stSidebar"] * {
+        color: #ffffff;
+    }
+    </style>
 """, unsafe_allow_html=True)
 
 ### ---------------------------------------------------------------------------------------- ###
 ### --------------------------------------- SIDEBAR ---------------------------------------- ###
 ### ---------------------------------------------------------------------------------------- ###
+
+# Logo in sidebar (place logo at assets/mistral_logo.png)
+logo_path = Path("assets/mistral_logo.png")
+if logo_path.exists():
+    st.sidebar.image(str(logo_path), use_column_width=True)
 
 st.sidebar.title("CAD Monitor")
 start_dt = st.sidebar.date_input("Start Date", value=pd.to_datetime("1999-12-31"))
@@ -127,12 +77,12 @@ with st.sidebar:
     sections = {
         "BoC Activity": {
             "Select an option...": "Select an option...",
-            "Balance Sheet": "Balance Sheet",
+            "Balance Sheet": "Balance Sheet"
         },
         "Repo": {
             "Select an option...": "Select an option...",
-            "CORRA": "CORRA",
-        },
+            "CORRA": "CORRA"
+        }
     }
 
     for section in sections:
@@ -145,7 +95,7 @@ with st.sidebar:
         list(sections["BoC Activity"].keys()),
         key="BoC Activity_selection",
         on_change=lambda: reset_other_selections("BoC Activity"),
-        label_visibility="collapsed",
+        label_visibility="collapsed"
     )
 
     st.markdown("### Repo")
@@ -154,7 +104,7 @@ with st.sidebar:
         list(sections["Repo"].keys()),
         key="Repo_selection",
         on_change=lambda: reset_other_selections("Repo"),
-        label_visibility="collapsed",
+        label_visibility="collapsed"
     )
 
     page = "Select an option..."
@@ -180,6 +130,6 @@ if page == "Balance Sheet":
 elif page == "CORRA":
     st.title("CORRA")
     st.subheader("CORRA Rate Complex")
-    app_cad_repo.plot_corra_rate_complex()
+    app_cad_repo.plot_corra_rate_complex(start_dt, end_dt)
     st.subheader("CORRA Total and Trimmed Volume")
-    app_cad_repo.plot_corra_volumes()
+    app_cad_repo.plot_corra_volumes(start_dt, end_dt)

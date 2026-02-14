@@ -40,8 +40,8 @@ corra_volume_df = merge_dfs([
     corra_total_volume_df,
     corra_trimmed_volume_df]).dropna()
 
-def plot_corra_rate_complex():
-    streamlit_plot(df=corra_rate_complex,
+def plot_corra_rate_complex(start_dt,end_dt):
+    streamlit_plot(df=corra_rate_complex.loc[start_dt,end_dt],
                    columns_array=corra_rate_complex.columns,
                    colors_array=["#0B2138",
                                  "#48DEE9",
@@ -51,8 +51,8 @@ def plot_corra_rate_complex():
                    graph_title='CORRA Rate Complex',
                    y_axis_label='%')
 
-def plot_corra_volumes():
-    streamlit_plot(df=corra_volume_df,
+def plot_corra_volumes(start_dt,end_dt):
+    streamlit_plot(df=corra_volume_df.loc[start_dt,end_dt],
                    columns_array=corra_volume_df.columns,
                    colors_array=["#0B2138", "#48DEE9"],
                    graph_title='CORRA Total and Trimmed Volume',
