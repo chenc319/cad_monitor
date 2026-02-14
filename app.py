@@ -122,9 +122,9 @@ with st.sidebar:
 
 if page == 'Balance Sheet':
     st.title('Assets')
-    app_boc_activity.plot_boc_assets()
+    app_boc_activity.plot_boc_assets(start_date,end_date)
     st.title('Liabilities')
-    app_boc_activity.plot_boc_liabilities()
+    app_boc_activity.plot_boc_liabilities(start_date,end_date)
 
 
 ### ---------------------------------------------------------------------------------------- ###
