@@ -65,7 +65,6 @@ money_market_ylds_df = merge_dfs([
 ]).dropna()
 
 def plot_corra_rate_complex():
-    
     streamlit_plot_with_spreads(
         df=corra_rate_complex,
         main_columns=corra_rate_complex.columns,
@@ -87,7 +86,7 @@ def plot_corra_rate_complex():
             "#FF6B9A",
             "#A3FF8F",
             "#C492FF"],
-        spread_y_label="Spreads",
+        spread_y_label="%",
     )
 
 def plot_corra_volumes():
@@ -99,20 +98,39 @@ def plot_corra_volumes():
         y_axis_label="%",
         spread_pairs=[("Total Volume", "Trimmed Volume")],  # add more tuples if needed
         spread_colors=["#F9C846"],
-        spread_y_label="Spread (Total - Trimmed)",
+        spread_y_label="$",
     )
 
-
 def plot_money_market_yields():
-    streamlit_plot(df=money_market_ylds_df,
-                   columns_array=money_market_ylds_df.columns,
-                   colors_array=["#0B2138",
-                                 "#48DEE9",
-                                 '#7EC0EE',
-                                 '#F9D15B',
-                                 '#F9C846',
-                                 '#122A4A',
-                                 '#FFEEA8'],
-                   graph_title='Money Market Yields',
-                   y_axis_label='%')
+    streamlit_plot_with_spreads(
+        df=money_market_ylds_df,
+        main_columns=money_market_ylds_df.columns,
+        colors_array=[
+            "#0B2138",
+            "#48DEE9",
+            '#7EC0EE',
+            '#F9D15B',
+            '#F9C846',
+            '#122A4A',
+            '#FFEEA8'],
+        graph_title="Money Market Yields",
+        y_axis_label="%",
+        spread_pairs=[
+            ("CORRA", "ON MM Rate"),
+            ("CORRA", "1m Bills"),
+            ("CORRA", "2m Bills"),
+            ("CORRA", "3m Bills"),
+            ("CORRA", "6m Bills"),
+            ("CORRA", "1y Bills"),
+        ],  # add more tuples if needed
+        spread_colors=[
+            "#1B365D",
+            "#235789",
+            "#E8C766",
+            "#E7E6DD",
+            "#A0E7E5",
+            "#20576E",
+        ],
+        spread_y_label="%",
+    )
 
