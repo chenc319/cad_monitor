@@ -45,5 +45,10 @@ def plot_corra_rate_complex():
                    graph_title='CORRA Rate Complex',
                    y_axis_label='%')
 
-
+def plot_corra_volumes():
+    streamlit_plot(df=corra_volume_df,
+                   columns_array=corra_volume_df.columns,
+                   colors_array=["#0B2138", "#48DEE9"],
+                   graph_title='CORRA Total and Trimmed Volume',
+                   y_axis_label='%')
 
