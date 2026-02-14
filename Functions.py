@@ -15,9 +15,6 @@ import numpy as np
 from plotly.subplots import make_subplots
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
-from sklearn.linear_model import LinearRegression, LogisticRegression
 
 
 def merge_dfs(array_of_dfs):
