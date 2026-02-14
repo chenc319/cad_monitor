@@ -129,5 +129,8 @@ if page == 'Summary':
 ### ---------------------------------------------------------------------------------------- ###
 
 elif page == 'CORRA':
+    st.title("CORRA Rate Complex")
     app_cad_repo.plot_corra_rate_complex()
+    st.title("CORRA Total and Trimmed Volume")
+    app_cad_repo.plot_corra_volumes()
 
