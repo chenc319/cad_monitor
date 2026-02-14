@@ -5,20 +5,8 @@
 ### IMPORT OTHER SCRIPTS ###
 import streamlit as st
 import pandas as pd
-import functools as ft
 import app_boc_activity
 import app_cad_repo
-
-
-### FUNCTIONS ###
-def merge_dfs(array_of_dfs):
-    new_df = ft.reduce(lambda left,
-                              right: pd.merge(left,
-                                                    right,
-                                                    left_index=True,
-                                                    right_index=True,
-                                                    how='outer'), array_of_dfs)
-    return(new_df)
 
 ### ---------------------------------------------------------------------------------------- ###
 ### --------------------------------- CONFIGURE STREAMLIT ---------------------------------- ###
