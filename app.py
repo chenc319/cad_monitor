@@ -79,7 +79,7 @@ with st.sidebar:
         },
         "Repo": {
             "Select an option...": "Select an option...",
-            "Summary": "Summary"
+            "CORRA": "CORRA"
         }
     }
 
@@ -122,19 +122,12 @@ with st.sidebar:
 
 if page == 'Summary':
     st.title('Historical Performance')
-    app_sam_coreequity.core_equity_mags_spx()
-    st.title('Rolling Alpha')
-    app_sam_coreequity.sam_core_equity_rolling_alpha()
-    st.title('SAM Core Equity + MAGS Portfolios')
-    app_sam_coreequity.core_equity_mag_backtest_simulation()
-    st.title('Daily SAM CE vs. SPX')
-    app_sam_coreequity.mock_daily_sam_ce_portfolio()
+
 
 ### ---------------------------------------------------------------------------------------- ###
 ### --------------------------------------- CAD REPO --------------------------------------- ###
 ### ---------------------------------------------------------------------------------------- ###
 
 elif page == 'Growth & Inflation Study':
-    app_growth_inflation.plot_growth_inflation()
-    app_growth_inflation.plot_spx_sectors_and_factors_regimes()
+    app_cad_repo.plot_corra_rate_complex()
 

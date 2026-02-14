@@ -91,6 +91,26 @@ def return_metrics(backtest_returns_data, benchmark_data, ann_factor):
         ]
     return return_metrics_df
 
+def streamlit_plot(df,columns_array,colors_array,graph_title,y_axis_label):
+    fig = go.Figure()
+    for name, color in zip(columns_array, colors_array):
+        fig.add_trace(go.Scatter(
+            x=df.index,
+            y=df[name],
+            name=name,
+            mode='lines',
+            line=dict(color=color, width=2)
+        ))
+    fig.update_layout(
+        height=450,
+        hovermode='x unified',
+        legend=dict(title='Legend', orientation='h', y=-0.25),
+        margin=dict(t=30, b=30),
+        title=graph_title,
+        yaxis_title=y_axis_label
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
 ### ------------------------------------------------------------------------------------ ###
 ### ----------------------------------- CAD FUNCTION ----------------------------------- ###
 ### ------------------------------------------------------------------------------------ ###
