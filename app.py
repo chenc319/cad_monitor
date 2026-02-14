@@ -19,30 +19,55 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Top brand bar + layout tweaks
 st.markdown("""
-    <style>
-    .header-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        padding: 8px;
-        background-color: white;
-        z-index: 999;
-        border-bottom: 1px solid #f0f2f6;
-        font-size: 14px;
-    }
-    .main {
-        margin-top: 60px;
-    }
-    .stMetric {
-        background-color: #ffffff;
-        padding: 4px 8px;
-        border-radius: 4px;
-        display: inline-block;
-        margin-right: 10px;a
-    }
-    </style>
+<style>
+/* Top brand bar */
+.brand-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 64px;
+    padding: 0 32px;
+    background-color: #003321;  /* dark green */
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    border-bottom: 1px solid #002616;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Left: logo + firm name */
+.brand-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+}
+
+/* Right: app name */
+.brand-right {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+/* Push main content below bar */
+main .block-container {
+    padding-top: 88px;
+}
+</style>
+
+<div class="brand-bar">
+  <div class="brand-left">
+    <span style="font-size:26px; line-height:1;">≋</span>
+    <span>MISTRAL&nbsp;CAPITAL</span>
+  </div>
+  <div class="brand-right">
+    CAD Monitor
+  </div>
+</div>
 """, unsafe_allow_html=True)
 
 ### SIDEBAR ###
@@ -78,7 +103,7 @@ with st.sidebar:
 
     # Create section headers and selectboxes
     st.markdown("### BoC Activity")
-    macro_regime_models = st.selectbox(
+    boc_activity = st.selectbox(
         "BoC Activity",
         list(sections["BoC Activity"].keys()),
         key="BoC Activity_selection",
@@ -87,7 +112,7 @@ with st.sidebar:
     )
 
     st.markdown("### Repo")
-    demark = st.selectbox(
+    repo = st.selectbox(
         "Repo",
         list(sections["Repo"].keys()),
         key="Repo_selection",
@@ -97,12 +122,11 @@ with st.sidebar:
 
     # Set the current page based on any non-default selection
     page = "Select an option..."
-    for selection in [macro_regime_models,
-                      demark
-                      ]:
+    for selection in [boc_activity, repo]:
         if selection != "Select an option...":
             page = selection
             break
+
 
 ### ---------------------------------------------------------------------------------------- ###
 ### ------------------------------- BANK OF CANADA ACTIVITY -------------------------------- ###
