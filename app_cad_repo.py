@@ -114,7 +114,7 @@ def plot_money_market_yields():
             '#122A4A',
             '#FFEEA8'],
         graph_title="Money Market Yields",
-        y_axis_label="%",
+        y_axis_label="",
         spread_pairs=[
             ("CORRA", "ON MM Rate"),
             ("CORRA", "1m Bills"),
@@ -131,6 +131,6 @@ def plot_money_market_yields():
             "#A0E7E5",
             "#20576E",
         ],
-        spread_y_label="%",
+        spread_y_label="",
     )
 
