@@ -49,6 +49,44 @@ corra_95_df = get_boc_historical_timeseries(
 with open(Path(DATA_DIR) / 'corra_95_df.pkl', 'wb') as file:
     pickle.dump(corra_95_df, file)
 
+### MONEY MARKET YIELDS ###
+on_mm_financing_rate_df = get_boc_historical_timeseries(
+    'CL.CDN.MOST.1DL',
+    'Overnight Money Market Financing Rate')
+with open(Path(DATA_DIR) / 'on_mm_financing_rate_df.pkl', 'wb') as file:
+    pickle.dump(on_mm_financing_rate_df, file)
+
+treasury_bills_1m = get_boc_historical_timeseries(
+    'TB.CDN.30D.MID',
+    'Treasury Bills - 1M')
+with open(Path(DATA_DIR) / 'treasury_bills_1m.pkl', 'wb') as file:
+    pickle.dump(treasury_bills_1m, file)
+
+treasury_bills_2m = get_boc_historical_timeseries(
+    'TB.CDN.60D.MID',
+    'Treasury Bills - 2M')
+with open(Path(DATA_DIR) / 'treasury_bills_2m.pkl', 'wb') as file:
+    pickle.dump(treasury_bills_2m, file)
+
+treasury_bills_3m = get_boc_historical_timeseries(
+    'TB.CDN.90D.MID',
+    'Treasury Bills - 3M')
+with open(Path(DATA_DIR) / 'treasury_bills_3m.pkl', 'wb') as file:
+    pickle.dump(treasury_bills_3m, file)
+
+treasury_bills_6m = get_boc_historical_timeseries(
+    'TB.CDN.180D.MID',
+    'Treasury Bills - 6M')
+with open(Path(DATA_DIR) / 'treasury_bills_6m.pkl', 'wb') as file:
+    pickle.dump(treasury_bills_6m, file)
+
+treasury_bills_1y = get_boc_historical_timeseries(
+    'TB.CDN.1Y.MID',
+    'Treasury Bills - 1Y')
+with open(Path(DATA_DIR) / 'treasury_bills_1y.pkl', 'wb') as file:
+    pickle.dump(treasury_bills_1y, file)
+
+
 ### CORRA TRADING VOLUME ###
 corra_total_volume_df = get_boc_historical_timeseries(
     'CORRA_TOTAL_VOLUME',

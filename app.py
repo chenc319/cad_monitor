@@ -82,9 +82,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
-
-
 ### SIDEBAR ###
 st.sidebar.title("Mistral CAD Monitor")
 start_dt = st.sidebar.date_input("Start Date", value=pd.to_datetime('1999-12-31'))
@@ -162,6 +159,8 @@ if page == 'Balance Sheet':
 elif page == 'CORRA':
     st.title("CORRA Rate Complex")
     app_cad_repo.plot_corra_rate_complex(start_dt,end_dt)
+    st.title("Money Market Yields")
+    app_cad_repo.plot_money_market_yields(start_dt, end_dt)
     st.title("CORRA Total and Trimmed Volume")
     app_cad_repo.plot_corra_volumes(start_dt,end_dt)
 
