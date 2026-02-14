@@ -168,5 +168,58 @@ boc_total_liabilities_df = get_boc_historical_timeseries(
 with open(Path(DATA_DIR) / 'boc_total_liabilities_df.pkl', 'wb') as file:
     pickle.dump(boc_total_liabilities_df, file)
 
+### SECURITIES REPO OPERATIONS ###
+bank_rate = get_boc_historical_timeseries(
+    'V39078',
+    'Bank Rate')
+with open(Path(DATA_DIR) / 'bank_rate.pkl', 'wb') as file:
+    pickle.dump(bank_rate, file)
 
+target_on_rate = get_boc_historical_timeseries(
+    'V39079',
+    'Target Rate')
+with open(Path(DATA_DIR) / 'target_on_rate.pkl', 'wb') as file:
+    pickle.dump(target_on_rate, file)
+
+operating_band_low = get_boc_historical_timeseries(
+    'V39076',
+    'Operating Band Low Rate')
+with open(Path(DATA_DIR) / 'operating_band_low.pkl', 'wb') as file:
+    pickle.dump(operating_band_low, file)
+
+operating_band_high = get_boc_historical_timeseries(
+    'V39077',
+    'Operating Band High Rate')
+with open(Path(DATA_DIR) / 'operating_band_high.pkl', 'wb') as file:
+    pickle.dump(operating_band_high, file)
+
+lynx_settlement_balance_actual = get_boc_historical_timeseries(
+    'ACTUAL',
+    'Lynx Settlement Balances - Actual')
+with open(Path(DATA_DIR) / 'lynx_settlement_balance_actual.pkl', 'wb') as file:
+    pickle.dump(lynx_settlement_balance_actual, file)
+
+overnight_repo = get_boc_historical_timeseries(
+    'SPRA_OUT',
+    'Overnight Repo')
+with open(Path(DATA_DIR) / 'overnight_repo.pkl', 'wb') as file:
+    pickle.dump(overnight_repo, file)
+
+overnight_rrp = get_boc_historical_timeseries(
+    'SRA_OUT',
+    'Overnight RRP')
+with open(Path(DATA_DIR) / 'overnight_rrp.pkl', 'wb') as file:
+    pickle.dump(overnight_rrp, file)
+
+securities_lending = get_boc_historical_timeseries(
+    'SEC_LEND',
+    'Securities Lending')
+with open(Path(DATA_DIR) / 'securities_lending.pkl', 'wb') as file:
+    pickle.dump(securities_lending, file)
+
+term_repo = get_boc_historical_timeseries(
+    'TERMREPOS',
+    'Term Repo')
+with open(Path(DATA_DIR) / 'term_repo.pkl', 'wb') as file:
+    pickle.dump(term_repo, file)
 

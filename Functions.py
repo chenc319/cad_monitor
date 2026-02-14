@@ -208,3 +208,20 @@ def get_boc_historical_timeseries(series_id,col_name):
     df.index = df['date'].values
     df.drop('date', axis=1, inplace=True)
     return df
+
+def get_boc_historical_sro(series_id,col_name):
+    url = f"https://www.bankofcanada.ca/valet/observations/{series_id}/json"
+    params = {
+        "start_date": "1990-01-01",
+        "order_dir": "asc",
+    }
+    data = requests.get(url, params=params).json()
+    obs = data["observations"]
+    df = pd.DataFrame(
+        {"date": [o["sr_id"] for o in obs],
+         'n': [float(o[series_id]["v"]) for o in obs],}
+    )
+    df["date"] = pd.to_datetime(df["date"])
+    df.index = df['date'].values
+    df.drop('date', axis=1, inplace=True)
+    return df

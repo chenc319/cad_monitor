@@ -7,6 +7,7 @@ import streamlit as st
 import pandas as pd
 import app_boc_activity
 import app_cad_repo
+import app_lynx
 
 ### ---------------------------------------------------------------------------------------- ###
 ### --------------------------------- CONFIGURE STREAMLIT ---------------------------------- ###
@@ -104,7 +105,8 @@ with st.sidebar:
         },
         "Repo": {
             "Select an option...": "Select an option...",
-            "CORRA": "CORRA"
+            "CORRA": "CORRA",
+            "Lynx": "Lynx"
         }
     }
 
@@ -164,3 +166,12 @@ elif page == 'CORRA':
     st.title("CORRA Total and Trimmed Volume")
     app_cad_repo.plot_corra_volumes()
 
+### ---------------------------------------------------------------------------------------- ###
+### ------------------------------- SECURITIES REPO OPERATION ------------------------------ ###
+### ---------------------------------------------------------------------------------------- ###
+
+elif page == 'Lynx':
+    st.title("Monetary Policy Implementation")
+    app_lynx.plot_monetary_policy_implementation()
+    st.title("Lynx Settlement Balance")
+    app_lynx.plot_lynx_settlement_balance()
