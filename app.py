@@ -47,8 +47,8 @@ st.markdown("""
 
 ### SIDEBAR ###
 st.sidebar.title("CAD Monitor")
-start_date = st.sidebar.date_input("Start Date", value=pd.to_datetime('1999-12-31'))
-end_date = st.sidebar.date_input("End Date", value=pd.to_datetime('today'))
+start_dt = st.sidebar.date_input("Start Date", value=pd.to_datetime('1999-12-31'))
+end_dt = st.sidebar.date_input("End Date", value=pd.to_datetime('today'))
 
 def reset_other_selections(current_section):
     sections = ["BoC Activity",
@@ -110,9 +110,9 @@ with st.sidebar:
 
 if page == 'Balance Sheet':
     st.title('Assets')
-    app_boc_activity.plot_boc_assets(start_date,end_date)
+    app_boc_activity.plot_boc_assets(start_dt,end_dt)
     st.title('Liabilities')
-    app_boc_activity.plot_boc_liabilities(start_date,end_date)
+    app_boc_activity.plot_boc_liabilities(start_dt,end_dt)
 
 
 ### ---------------------------------------------------------------------------------------- ###
