@@ -50,18 +50,27 @@ st.markdown("""
         background-color: #0F3B2E;  /* Mistral green */
     }
 
-    /* Sidebar text color */
+    /* Sidebar general text color */
     [data-testid="stSidebar"] * {
         color: #FFFFFF !important;
     }
 
-    /* Optional: tweak selectboxes and date inputs in sidebar */
-    [data-testid="stSidebar"] .stSelectbox,
-    [data-testid="stSidebar"] .stDateInput {
-        background-color: #0F3B2E;
+    /* Inputs/selectboxes: white boxes with dark text so content is visible */
+    [data-testid="stSidebar"] .stSelectbox div[data-baseweb="select"],
+    [data-testid="stSidebar"] .stDateInput input,
+    [data-testid="stSidebar"] input,
+    [data-testid="stSidebar"] textarea {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+    }
+
+    /* Dropdown options text (when open) */
+    div[role="listbox"] * {
+        color: #000000 !important;
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 
 ### SIDEBAR ###
