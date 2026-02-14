@@ -64,8 +64,8 @@ money_market_ylds_df = merge_dfs([
     treasury_bills_1y
 ])
 
-def plot_corra_rate_complex(start_dt,end_dt):
-    streamlit_plot(df=corra_rate_complex.loc[start_dt,end_dt],
+def plot_corra_rate_complex():
+    streamlit_plot(df=corra_rate_complex,
                    columns_array=corra_rate_complex.columns,
                    colors_array=["#0B2138",
                                  "#48DEE9",
@@ -75,15 +75,15 @@ def plot_corra_rate_complex(start_dt,end_dt):
                    graph_title='CORRA Rate Complex',
                    y_axis_label='%')
 
-def plot_corra_volumes(start_dt,end_dt):
-    streamlit_plot(df=corra_volume_df.loc[start_dt,end_dt],
+def plot_corra_volumes():
+    streamlit_plot(df=corra_volume_df,
                    columns_array=corra_volume_df.columns,
                    colors_array=["#0B2138", "#48DEE9"],
                    graph_title='CORRA Total and Trimmed Volume',
                    y_axis_label='%')
 
-def plot_money_market_yields(start_dt,end_dt):
-    streamlit_plot(df=money_market_ylds_df.loc[start_dt, end_dt],
+def plot_money_market_yields():
+    streamlit_plot(df=money_market_ylds_df,
                    columns_array=money_market_ylds_df.columns,
                    colors_array=["#0B2138",
                                  "#48DEE9",
