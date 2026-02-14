@@ -59,7 +59,7 @@ st.markdown("""
 ### ---------------------------------------------------------------------------------------- ###
 
 # Logo in sidebar (place logo at assets/mistral_logo.png)
-logo_path = Path("assets/mistral_logo.png")
+logo_path = Path("mistral logo.png")
 if logo_path.exists():
     st.sidebar.image(str(logo_path), use_column_width=True)
 
