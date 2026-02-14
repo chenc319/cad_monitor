@@ -39,62 +39,6 @@ with open(Path(DATA_DIR) / 'treasury_bills_6m.pkl', 'rb') as file:
 with open(Path(DATA_DIR) / 'treasury_bills_1y.pkl', 'rb') as file:
     treasury_bills_1y = pickle.load(file)
 
-def plot_corra_volumes_with_spread():
-    fig = make_subplots(
-        rows=2,
-        cols=1,
-        shared_xaxes=True,
-        vertical_spacing=0.05,
-        row_heights=[0.7, 0.3],
-    )
-
-    # top: original series
-    fig.add_trace(
-        go.Scatter(
-            x=corra_volume_df.index,
-            y=corra_volume_df["Total Volume"],
-            name="Total Volume",
-            mode="lines",
-            line=dict(color="#0B2138", width=2),
-        ),
-        row=1, col=1,
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=corra_volume_df.index,
-            y=corra_volume_df["Trimmed Volume"],
-            name="Trimmed Volume",
-            mode="lines",
-            line=dict(color="#48DEE9", width=2),
-        ),
-        row=1, col=1,
-    )
-
-    # bottom: spread
-    fig.add_trace(
-        go.Scatter(
-            x=corra_volume_df.index,
-            y=corra_volume_df["Spread"],
-            name="Spread",
-            mode="lines",
-            line=dict(color="#F9C846", width=2),
-        ),
-        row=2, col=1,
-    )
-
-    fig.update_layout(
-        height=700,
-        hovermode="x unified",
-        legend=dict(title="Legend", orientation="h", y=-0.15),
-        margin=dict(t=40, b=40),
-        title="CORRA Total and Trimmed Volume",
-    )
-
-    fig.update_yaxes(title_text="%", row=1, col=1)
-    fig.update_yaxes(title_text="Spread", row=2, col=1)
-
-    st.plotly_chart(fig, use_container_width=True)
-
 ### ------------------------------------------------------------------------------------ ###
 ### ------------------------------------- CAD REPO ------------------------------------- ###
 ### ------------------------------------------------------------------------------------ ###
@@ -110,10 +54,6 @@ corra_volume_df = merge_dfs([
     corra_total_volume_df,
     corra_trimmed_volume_df]).dropna()
 
-corra_volume_df["Spread"] = (
-    corra_volume_df["Total Volume"] - corra_volume_df["Trimmed Volume"]
-)
-
 money_market_ylds_df = merge_dfs([
     corra_df,
     on_mm_financing_rate_df,
@@ -122,7 +62,7 @@ money_market_ylds_df = merge_dfs([
     treasury_bills_3m,
     treasury_bills_6m,
     treasury_bills_1y
-])
+]).dropna()
 
 def plot_corra_rate_complex():
     streamlit_plot(df=corra_rate_complex,
@@ -136,7 +76,17 @@ def plot_corra_rate_complex():
                    y_axis_label='%')
 
 def plot_corra_volumes():
-    plot_corra_volumes_with_spread()
+    streamlit_plot_with_spreads(
+        df=corra_volume_df,
+        main_columns=["Total Volume", "Trimmed Volume"],
+        colors_array=["#0B2138", "#48DEE9"],
+        graph_title="CORRA Total and Trimmed Volume",
+        y_axis_label="%",
+        spread_pairs=[("Total Volume", "Trimmed Volume")],  # add more tuples if needed
+        spread_colors=["#F9C846"],
+        spread_y_label="Spread (Total - Trimmed)",
+    )
+
 
 def plot_money_market_yields():
     streamlit_plot(df=money_market_ylds_df,

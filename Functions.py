@@ -108,6 +108,86 @@ def streamlit_plot(df,columns_array,colors_array,graph_title,y_axis_label):
     )
     st.plotly_chart(fig, use_container_width=True)
 
+def streamlit_plot_with_spreads(
+    df,
+    main_columns,
+    colors_array,
+    graph_title,
+    y_axis_label,
+    spread_pairs=None,
+    spread_colors=None,
+    spread_y_label="Spread"
+):
+    """
+    df: DataFrame with time index.
+    main_columns: list of column names to plot on the top chart.
+    colors_array: list of colors (same length as main_columns).
+    spread_pairs: list of (col_a, col_b) tuples to compute col_a - col_b.
+    spread_colors: list of colors for each spread trace (same length as spread_pairs).
+    """
+
+    if spread_pairs is None:
+        spread_pairs = []
+    if spread_colors is None:
+        # fallback colors if not provided
+        spread_colors = ["#F9C846", "#F9D15B", "#7EC0EE"][:len(spread_pairs)]
+
+    # build subplots only if we have spreads
+    rows = 2 if spread_pairs else 1
+
+    fig = make_subplots(
+        rows=rows,
+        cols=1,
+        shared_xaxes=True,
+        vertical_spacing=0.05,
+        row_heights=[0.7, 0.3] if rows == 2 else [1.0],
+    )
+
+    # top: original series
+    for name, color in zip(main_columns, colors_array):
+        fig.add_trace(
+            go.Scatter(
+                x=df.index,
+                y=df[name],
+                name=name,
+                mode="lines",
+                line=dict(color=color, width=2),
+            ),
+            row=1, col=1,
+        )
+
+    # bottom: one or more spreads
+    if spread_pairs:
+        for (col_a, col_b), color in zip(spread_pairs, spread_colors):
+            spread_name = f"{col_a} - {col_b}"
+            spread_values = df[col_a] - df[col_b]
+
+            fig.add_trace(
+                go.Scatter(
+                    x=df.index,
+                    y=spread_values,
+                    name=spread_name,
+                    mode="lines",
+                    line=dict(color=color, width=2),
+                ),
+                row=2, col=1,
+            )
+
+    # layout
+    fig.update_layout(
+        height=700 if rows == 2 else 450,
+        hovermode="x unified",
+        legend=dict(title="Legend", orientation="h", y=-0.2),
+        margin=dict(t=30, b=40),
+        title=graph_title,
+    )
+
+    fig.update_yaxes(title_text=y_axis_label, row=1, col=1)
+    if spread_pairs:
+        fig.update_yaxes(title_text=spread_y_label, row=2, col=1)
+
+    st.plotly_chart(fig, use_container_width=True)
+
 ### ------------------------------------------------------------------------------------ ###
 ### ----------------------------------- CAD FUNCTION ----------------------------------- ###
 ### ------------------------------------------------------------------------------------ ###
