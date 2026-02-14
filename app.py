@@ -121,7 +121,10 @@ with st.sidebar:
 ### ---------------------------------------------------------------------------------------- ###
 
 if page == 'Summary':
-    st.title('Historical Performance')
+    st.title('Assets')
+    app_boc_activity.plot_boc_assets()
+    st.title('Liabilities')
+    app_boc_activity.plot_boc_liabilities()
 
 
 ### ---------------------------------------------------------------------------------------- ###

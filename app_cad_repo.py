@@ -30,18 +30,24 @@ with open(Path(DATA_DIR) / 'corra_trimmed_volume_df.pkl', 'rb') as file:
 ### ------------------------------------- CAD REPO ------------------------------------- ###
 ### ------------------------------------------------------------------------------------ ###
 
-corra_rate_complex = merge_dfs([corra_df,
-                                corra_5_df,
-                                corra_25_df,
-                                corra_75_df,
-                                corra_95_df]).dropna()
-corra_volume_df = merge_dfs([corra_total_volume_df,
-                             corra_trimmed_volume_df]).dropna()
+corra_rate_complex = merge_dfs([
+    corra_df,
+    corra_5_df,
+    corra_25_df,
+    corra_75_df,
+    corra_95_df]).dropna()
+corra_volume_df = merge_dfs([
+    corra_total_volume_df,
+    corra_trimmed_volume_df]).dropna()
 
 def plot_corra_rate_complex():
     streamlit_plot(df=corra_rate_complex,
                    columns_array=corra_rate_complex.columns,
-                   colors_array=["#0B2138", "#48DEE9",'#7EC0EE','#F9D15B','#F9C846'],
+                   colors_array=["#0B2138",
+                                 "#48DEE9",
+                                 '#7EC0EE',
+                                 '#F9D15B',
+                                 '#F9C846'],
                    graph_title='CORRA Rate Complex',
                    y_axis_label='%')
 
