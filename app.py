@@ -147,9 +147,9 @@ with st.sidebar:
 
 if page == 'Balance Sheet':
     st.title('Assets')
-    app_boc_activity.plot_boc_assets(start_dt,end_dt)
+    app_boc_activity.plot_boc_assets()
     st.title('Liabilities')
-    app_boc_activity.plot_boc_liabilities(start_dt,end_dt)
+    app_boc_activity.plot_boc_liabilities()
 
 
 ### ---------------------------------------------------------------------------------------- ###
@@ -158,9 +158,9 @@ if page == 'Balance Sheet':
 
 elif page == 'CORRA':
     st.title("CORRA Rate Complex")
-    app_cad_repo.plot_corra_rate_complex(start_dt,end_dt)
+    app_cad_repo.plot_corra_rate_complex()
     st.title("Money Market Yields")
-    app_cad_repo.plot_money_market_yields(start_dt, end_dt)
+    app_cad_repo.plot_money_market_yields()
     st.title("CORRA Total and Trimmed Volume")
-    app_cad_repo.plot_corra_volumes(start_dt,end_dt)
+    app_cad_repo.plot_corra_volumes()
 
