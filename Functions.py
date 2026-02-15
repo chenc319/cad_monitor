@@ -208,3 +208,12 @@ def get_boc_historical_timeseries(series_id,col_name):
     df.index = df['date'].values
     df.drop('date', axis=1, inplace=True)
     return df
+
+
+
+tables = pd.read_html(
+    "https://www.bankofcanada.ca/markets/market-operations-"
+    "liquidity-provision/market-operations-programs-and-facilities/"
+    "securities-lending-program/"
+)
+securities_lending_results = tables[1]
