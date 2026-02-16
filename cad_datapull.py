@@ -6,7 +6,40 @@
 from Functions import *
 from pathlib import Path
 import os
+import subprocess
 DATA_DIR = os.getenv('DATA_DIR', 'data')
+
+# Directory that contains cad_datapull.py; assumed to be repo root
+REPO_DIR = Path(__file__).resolve().parent
+DATA_DIR = os.getenv('DATA_DIR', REPO_DIR / 'data')
+
+def git_push_update(message="Auto-update BoC data"):
+    """
+    Stage data/, commit with a message, and push to origin.
+    Assumes REPO_DIR is a valid git repo and origin is configured.
+    """
+    repo_str = str(REPO_DIR)
+
+    # Stage only the data folder to avoid committing unrelated files
+    subprocess.run(
+        ["git", "-C", repo_str, "add", "data"],
+        check=True
+    )
+
+    # Commit; allow failure if there's nothing to commit
+    commit_proc = subprocess.run(
+        ["git", "-C", repo_str, "commit", "-m", message],
+        check=False
+    )
+    if commit_proc.returncode != 0:
+        # Probably "nothing to commit"; skip push
+        return
+
+    # Push to origin (current branch)
+    subprocess.run(
+        ["git", "-C", repo_str, "push"],
+        check=True
+    )
 
 ### ------------------------------------------------------------------------------------ ###
 ### ------------------------------------- DATAPULL ------------------------------------- ###
