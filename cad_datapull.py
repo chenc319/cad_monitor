@@ -224,9 +224,5 @@ with open(Path(DATA_DIR) / 'term_repo.pkl', 'wb') as file:
     pickle.dump(term_repo, file)
 
 
-get_boc_historical_timeseries(
-    'Securities-Lending Program',
-    'Term Repo')
-
 
 
