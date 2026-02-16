@@ -12,7 +12,7 @@ DATA_DIR = os.getenv('DATA_DIR', 'data')
 ### ------------------------------------- DATAPULL ------------------------------------- ###
 ### ------------------------------------------------------------------------------------ ###
 
-def update_all_date():
+def update_all_data():
     ### CORRA RATE ###
     corra_df = get_boc_historical_timeseries(
         'AVG.INTWO',
