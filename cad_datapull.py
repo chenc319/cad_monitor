@@ -258,6 +258,14 @@ def update_all_data():
         pickle.dump(term_repo, file)
 
     ### CFTC ###
+    url = "https://publicreporting.cftc.gov/resource/gpe5-46if.csv?$limit=60000"
+    response = requests.get(url)
+    cftc_all_futures = pd.read_csv(StringIO(response.text))
+    cftc_all_futures.columns
+    cftc_all_futures.index = pd.to_datetime(cftc_all_futures['report_date_as_yyyy_mm_dd'].values)
+    cftc_all_futures.drop('report_date_as_yyyy_mm_dd', axis=1)
+    with open(Path(DATA_DIR) / 'cftc_all_futures.pkl', 'wb') as file:
+        pickle.dump(cftc_all_futures, file)
 
 
 
