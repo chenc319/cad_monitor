@@ -257,6 +257,8 @@ def update_all_data():
     with open(Path(DATA_DIR) / 'term_repo.pkl', 'wb') as file:
         pickle.dump(term_repo, file)
 
+    ### CFTC ###
+
 
 
 

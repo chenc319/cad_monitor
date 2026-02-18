@@ -15,6 +15,16 @@ import numpy as np
 from plotly.subplots import make_subplots
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.pyplot as plt
+from io import StringIO
+
+url = "https://publicreporting.cftc.gov/resource/gpe5-46if.csv?$limit=60000"
+response = requests.get(url)
+cftc_all_futures = pd.read_csv(StringIO(response.text))
+cftc_all_futures.columns
+cftc_all_futures.index = pd.to_datetime(cftc_all_futures['report_date_as_yyyy_mm_dd'].values)
+cftc_all_futures.drop('report_date_as_yyyy_mm_dd', axis=1)
+with open(Path(DATA_DIR) / 'cftc_all_futures.pkl', 'wb') as file:
+    pickle.dump(cftc_all_futures, file)
 
 
 def merge_dfs(array_of_dfs):
