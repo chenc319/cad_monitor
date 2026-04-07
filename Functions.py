@@ -7,10 +7,9 @@ import streamlit as st
 import plotly.graph_objs as go
 import plotly.subplots as sp
 import pandas as pd
-import requests
+import requests, zipfile, io
 import functools as ft
 import pickle
-import pandas_datareader as pdr
 import numpy as np
 from plotly.subplots import make_subplots
 from matplotlib.colors import LinearSegmentedColormap

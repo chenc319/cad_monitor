@@ -258,15 +258,156 @@ def update_all_data():
         pickle.dump(term_repo, file)
 
     ### CFTC ###
-    url = "https://publicreporting.cftc.gov/resource/gpe5-46if.csv?$limit=60000"
+    with open(Path(DATA_DIR) / 'cftc_all_futures.pkl', 'rb') as file:
+        cftc_all_futures = pickle.load(file)
+
+    url = "https://publicreporting.cftc.gov/resource/gpe5-46if.csv?$limit=100"
     response = requests.get(url)
-    cftc_all_futures = pd.read_csv(StringIO(response.text))
-    cftc_all_futures.columns
-    cftc_all_futures.index = pd.to_datetime(cftc_all_futures['report_date_as_yyyy_mm_dd'].values)
-    cftc_all_futures.drop('report_date_as_yyyy_mm_dd', axis=1)
+    new_cftc = pd.read_csv(StringIO(response.text))
+    new_cftc.columns
+    new_cftc.index = pd.to_datetime(new_cftc['report_date_as_yyyy_mm_dd'].values)
+    new_cftc.drop('report_date_as_yyyy_mm_dd', axis=1)
+
+    new_cftc['market_and_exchange_names'].unique()
+
+    for each_idx in new_cftc.index:
+        if each_idx not in cftc_all_futures.index:
+            cftc_all_futures.loc[each_idx] = new_cftc.loc[each_idx]
+
     with open(Path(DATA_DIR) / 'cftc_all_futures.pkl', 'wb') as file:
         pickle.dump(cftc_all_futures, file)
 
 
+def cot_year(start_year=2010,
+             end_year=2026,
+             cot_report_type="traders_in_financial_futures_fut"
+             ):
+    '''Downloads the selected COT report historical data for a single year
+    from the cftc.gov webpage as zip file, unzips the downloaded folder and returns
+    the cot data as DataFrame.
+    For the current year selection, please note: updates by the CFTC occur typically weekly.
+    Once the documents update by CFTC occured, the updated data can be accessed through
+    this function. The cot_report_type must match one of the following.
+
+    COT report types:
+    "legacy_fut" as report type argument selects the Legacy futures only report,
+    "legacy_futopt" the Legacy futures and options report,
+    "supplemental_futopt" the Sumpplemental futures and options reports,
+    "disaggregated_fut" the Disaggregated futures only report,
+    "disaggregated_futopt" the COT Disaggregated futures and options report,
+    "traders_in_financial_futures_fut" the Traders in Financial Futures futures only report, and
+    "traders_in_financial_futures_fut" the Traders in Financial Futures futures and options report.
+
+    Args:
+        cot_report_type (str): selection of the COT report type. Defaults to "legacy_fut" (Legacy futures only report).
+        cot_year(int) = year specification as YYYY
+
+    Returns:
+        A DataFrame with differing variables (depending on the selected report type).
+
+    Raises:
+        ValueError: Raises an exception and returns the argument options.'''
+    if cot_report_type == "legacy_fut":
+        rep = "deacot"
+        txt = "annual.txt"
+
+    elif cot_report_type == "legacy_futopt":
+        rep = "deahistfo"
+        txt = "annualof.txt"
+
+    elif cot_report_type == "supplemental_futopt":
+        rep = "dea_cit_txt_"
+        txt = "annualci.txt"
+
+    elif cot_report_type == "disaggregated_fut":
+        rep = "fut_disagg_txt_"
+        txt = "f_year.txt"
+
+    elif cot_report_type == "disaggregated_futopt":
+        rep = "com_disagg_txt_"
+        txt = "c_year.txt"
+
+    elif cot_report_type == "traders_in_financial_futures_fut":
+        rep = "fut_fin_txt_"
+        txt = "FinFutYY.txt"
+
+    elif cot_report_type == "traders_in_financial_futures_futopt":
+        rep = "com_fin_txt_"
+        txt = "FinComYY.txt"
+
+    else:
+        raise ValueError(
+            'cot_report_type must be one of: '
+            '"legacy_fut", "legacy_futopt", "supplemental_futopt", '
+            '"disaggregated_fut", "disaggregated_futopt", '
+            '"traders_in_financial_futures_fut", '
+            '"traders_in_financial_futures_futopt"'
+        )
+
+    dfs = []
+
+    for year in range(start_year, end_year + 1):
+        print(f"Downloading year {year} ...")
+
+        url = f"https://cftc.gov/files/dea/history/{rep}{year}.zip"
+        r = requests.get(url)
+        r.raise_for_status()
+
+        with zipfile.ZipFile(io.BytesIO(r.content)) as zf:
+            with zf.open(txt) as f:
+                df_year = pd.read_csv(f, low_memory=False)
+
+        df_year["cot_year"] = year
+        dfs.append(df_year)
+
+    if not dfs:
+        raise RuntimeError("No data downloaded; check year range or report type.")
+
+    return pd.concat(dfs, ignore_index=True)
+
+test_cot = cot_year()
+
+rates_cftc_market_exchange_names = [
+    'EURO SHORT TERM RATE - CHICAGO MERCANTILE EXCHANGE',
+    '2 YEAR ERIS SOFR SWAP - CHICAGO BOARD OF TRADE',
+    '3 YEAR ERIS SOFR SWAP - CHICAGO BOARD OF TRADE',
+    '5 YEAR ERIS SOFR SWAP - CHICAGO BOARD OF TRADE',
+    '10 YEAR ERIS SOFR SWAP - CHICAGO BOARD OF TRADE',
+
+    'UST BOND - CHICAGO BOARD OF TRADE',
+    'ULTRA UST BOND - CHICAGO BOARD OF TRADE',
+    'UST 2Y NOTE - CHICAGO BOARD OF TRADE',
+    'UST 10Y NOTE - CHICAGO BOARD OF TRADE',
+    'ULTRA UST 10Y - CHICAGO BOARD OF TRADE',
+    'MICRO 10 YEAR YIELD - CHICAGO BOARD OF TRADE',
+    'UST 5Y NOTE - CHICAGO BOARD OF TRADE',
+    'FED FUNDS - CHICAGO BOARD OF TRADE',
+    'SOFR-3M - CHICAGO MERCANTILE EXCHANGE',
+    'SOFR-1M - CHICAGO MERCANTILE EXCHANGE',
+]
+
+historical_cot_dict = {}
+for contract_name in rates_cftc_market_exchange_names:
+    each_df = test_cot[test_cot['Market_and_Exchange_Names'] == contract_name]
+    each_df.index = pd.to_datetime(each_df['Report_Date_as_YYYY-MM-DD'])
+    each_df.drop([
+        'Market_and_Exchange_Names',
+        'As_of_Date_In_Form_YYMMDD',
+        'Report_Date_as_MM_DD_YYYY',
+        'CFTC_Contract_Market_Code',
+        'CFTC_Market_Code',
+        'CFTC_Region_Code',
+        'CFTC_Commodity_Code',
+        'CFTC_Contract_Market_Code_Quotes',
+        'CFTC_Market_Code_Quotes',
+        'CFTC_Commodity_Code_Quotes',
+        'CFTC_SubGroup_Code',
+        'FutOnly_or_Combined',
+        'cot_year',
+        'Report_Date_as_YYYY-MM-DD'
+    ], axis=1, inplace=True)
+    historical_cot_dict[contract_name] = each_df.sort_index()
+
+historical_cot_dict[list(historical_cot_dict.keys())[4]]
 
 
